@@ -3,6 +3,7 @@ package com.devkrishnagupta.user.service.controllers;
 import com.devkrishnagupta.user.service.entity.Hotel;
 import com.devkrishnagupta.user.service.entity.Rating;
 import com.devkrishnagupta.user.service.entity.User;
+import com.devkrishnagupta.user.service.external.service.HotelService;
 import com.devkrishnagupta.user.service.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,9 @@ public class UserController {
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private HotelService hotelService;
 
     private Logger logger = LoggerFactory.getLogger(UserController.class);
 
@@ -54,7 +58,8 @@ public class UserController {
 //            Hotel hotel = forEntity.getBody();
             //set the hotel to rating
 //            rating.setHotel(hotel);
-            rating.setHotel(restTemplate.getForEntity("http://HOTEL-SERVICE/api/hotels/" + rating.getHotelId(), Hotel.class).getBody());
+//            rating.setHotel(restTemplate.getForEntity("http://HOTEL-SERVICE/api/hotels/" + rating.getHotelId(), Hotel.class).getBody());
+            rating.setHotel(hotelService.getHotel(rating.getHotelId()));
             //return the rating
             return rating;
         }).collect(Collectors.toList());

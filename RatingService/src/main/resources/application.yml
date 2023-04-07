@@ -6,7 +6,7 @@ spring:
       uri: mongodb://localhost:27017
       database: microservices
   application:
-    name: RATING-SERIVE
+    name: RATING-SERVICE
 logging:
   level:
     org:

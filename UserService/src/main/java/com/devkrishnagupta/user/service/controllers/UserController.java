@@ -4,6 +4,7 @@ import com.devkrishnagupta.user.service.entity.Hotel;
 import com.devkrishnagupta.user.service.entity.Rating;
 import com.devkrishnagupta.user.service.entity.User;
 import com.devkrishnagupta.user.service.external.service.HotelService;
+import com.devkrishnagupta.user.service.external.service.RatingService;
 import com.devkrishnagupta.user.service.services.UserService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,9 @@ public class UserController {
     @Autowired
     private HotelService hotelService;
 
+    @Autowired
+    private RatingService ratingService;
+
     private Logger logger = LoggerFactory.getLogger(UserController.class);
 
     //create
@@ -48,8 +52,10 @@ public class UserController {
         User user = userService.getUser(userId);
         //fetch the rating of the above user from RATING-SERVICE
         //http://localhost:8083/api/ratings/user/63277621-4488-4457-afd5-0017164bbac7
-        Rating[] ratingsOfUser = restTemplate.getForObject("http://RATING-SERIVE/api/ratings/user/"+userId, Rating[].class);
-        List<Rating> ratings = Arrays.stream(ratingsOfUser).toList();
+//        Rating[] ratingsOfUser = restTemplate.getForObject("http://RATING-SERVICE/api/ratings/user/"+userId, Rating[].class);
+//        List<Rating> ratings = Arrays.stream(ratingsOfUser).toList();
+        List<Rating> ratings = ratingService.getRatingsByUserId(userId);
+
         logger.info("Ratings with user id {} is {}", userId, ratings);
         List<Rating> ratingList = ratings.stream().map(rating -> {
             //API call to hotel service to get the hotel

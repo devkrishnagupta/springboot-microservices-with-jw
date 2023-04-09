@@ -50,7 +50,7 @@ public class UserServiceImpl implements UserService {
         List<Rating> ratingList = ratings.stream().map((rating) ->{
             Hotel hotel = hotelService.getHotel(rating.getHotelId());
             rating.setHotel(hotel);
-            logger.info("FROM USER SERVICE IMPL : "+hotel);
+            logger.info("FROM USER SERVICE IMPL : "+hotel.toString());
             return rating;
         }).collect(Collectors.toList());
         logger.info(".................");

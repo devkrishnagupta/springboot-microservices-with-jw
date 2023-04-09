@@ -7,6 +7,7 @@ import com.devkrishnagupta.user.service.external.service.HotelService;
 import com.devkrishnagupta.user.service.external.service.RatingService;
 import com.devkrishnagupta.user.service.services.UserService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,10 +47,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(user1);
     }
 
+    int retryCount=1;
     //single user
     @GetMapping("/{userId}")
-    @CircuitBreaker(name = "ratingHotelBreaker", fallbackMethod = "ratingHotelFallback")
+//    @CircuitBreaker(name = "ratingHotelBreaker", fallbackMethod = "ratingHotelFallback")
+    @Retry(name = "ratingHotelService", fallbackMethod = "ratingHotelFallback")
     public ResponseEntity<User> getSingleUserWithCircuitBreaker(@PathVariable String userId){
+        logger.info("Retry count: {}", retryCount++);
         logger.info("Get Single User Handler: UserController: userId-> "+userId);
         User user = userService.getUser(userId);
         return ResponseEntity.ok(user);
@@ -58,7 +62,7 @@ public class UserController {
     //creating fall back method for circuit breaker
     public ResponseEntity<User> ratingHotelFallback(String userId, Exception ex){
         logger.info("Fallback is executed because Hotel service is down : "+ex.getMessage());
-       User user =  User.builder()
+        User user =  User.builder()
                .userId("testId")
                 .email("dummy@gmail.com")
                 .name("Dummy")

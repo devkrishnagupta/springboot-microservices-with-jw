@@ -22,6 +22,21 @@ spring:
   config:
     import: configserver:http://localhost:8086
 
+#Okta configuration for api gateway
+okta:
+  oauth2:
+    issuer: https://dev-54095434.okta.com/oauth2/default
+    audience: api://default
+    client-id: 0oa91q9zkbo4ZnfJL5d7
+    client-secret: 8OuTmwgCSSlmFj6LbXe3V4fuosRZl4a2dbmGwsrZ
+    scopes:
+      - openid
+      - profile
+      - email
+      - offline_access
+#    redirect-uri: http://localhost:8085/login/oauth2/code/okta
+#    post-logout-redirect-uri: http://localhost:8085
+
 #eureka:
 #  instance:
 #    prefer-ip-address: true

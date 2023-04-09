@@ -6,6 +6,7 @@ import com.devkrishnagupta.user.service.entity.User;
 import com.devkrishnagupta.user.service.external.service.HotelService;
 import com.devkrishnagupta.user.service.external.service.RatingService;
 import com.devkrishnagupta.user.service.services.UserService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,26 @@ public class UserController {
 
     //single user
     @GetMapping("/{userId}")
+    @CircuitBreaker(name = "ratingHotelBreaker", fallbackMethod = "ratingHotelFallback")
+    public ResponseEntity<User> getSingleUserWithCircuitBreaker(@PathVariable String userId){
+        logger.info("Get Single User Handler: UserController: userId-> "+userId);
+        User user = userService.getUser(userId);
+        return ResponseEntity.ok(user);
+    }
+
+    //creating fall back method for circuit breaker
+    public ResponseEntity<User> ratingHotelFallback(String userId, Exception ex){
+        logger.info("Fallback is executed because Hotel service is down : "+ex.getMessage());
+       User user =  User.builder()
+               .userId("testId")
+                .email("dummy@gmail.com")
+                .name("Dummy")
+                .about("This user is created dummy because some services is down")
+                .build();
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @GetMapping("/{userId}/first")
     public ResponseEntity<User> getSingleUser(@PathVariable String userId){
         //get user from database with the help of user repository
         User user = userService.getUser(userId);

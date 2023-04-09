@@ -1,4 +1,4 @@
-package com.devkrishnagupta.gateway.apigateway.config.controllers;
+package com.devkrishnagupta.gateway.apigateway.controllers;
 
 import com.devkrishnagupta.gateway.apigateway.config.controllers.models.AuthResponse;
 import org.slf4j.Logger;

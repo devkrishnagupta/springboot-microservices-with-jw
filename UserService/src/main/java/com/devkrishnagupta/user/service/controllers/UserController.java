@@ -7,6 +7,7 @@ import com.devkrishnagupta.user.service.external.service.HotelService;
 import com.devkrishnagupta.user.service.external.service.RatingService;
 import com.devkrishnagupta.user.service.services.UserService;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -50,8 +51,9 @@ public class UserController {
     int retryCount=1;
     //single user
     @GetMapping("/{userId}")
-//    @CircuitBreaker(name = "ratingHotelBreaker", fallbackMethod = "ratingHotelFallback")
-    @Retry(name = "ratingHotelService", fallbackMethod = "ratingHotelFallback")
+    //@CircuitBreaker(name = "ratingHotelBreaker", fallbackMethod = "ratingHotelFallback")
+    //@Retry(name = "ratingHotelService", fallbackMethod = "ratingHotelFallback")
+    @RateLimiter(name = "userRateLimiter", fallbackMethod = "ratingHotelFallback")
     public ResponseEntity<User> getSingleUserWithCircuitBreaker(@PathVariable String userId){
         logger.info("Retry count: {}", retryCount++);
         logger.info("Get Single User Handler: UserController: userId-> "+userId);
@@ -68,7 +70,7 @@ public class UserController {
                 .name("Dummy")
                 .about("This user is created dummy because some services is down")
                 .build();
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(user, HttpStatus.BANDWIDTH_LIMIT_EXCEEDED);
     }
 
     @GetMapping("/{userId}/first")

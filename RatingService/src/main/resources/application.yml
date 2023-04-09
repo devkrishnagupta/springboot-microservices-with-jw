@@ -7,6 +7,9 @@ spring:
       database: microservices
   application:
     name: RATING-SERVICE
+  config:
+    import: configserver:http://localhost:8086
+
 logging:
   level:
     org:
@@ -15,11 +18,11 @@ logging:
           mongodb:
             core:
               MongoTemplate: DEBUG
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    fetch-registry: true
-    register-with-eureka: true
-    service-url:
-      defaultZone: http://localhost:8084/eureka
+#eureka:
+#  instance:
+#    prefer-ip-address: true
+#  client:
+#    fetch-registry: true
+#    register-with-eureka: true
+#    service-url:
+#      defaultZone: http://localhost:8084/eureka

@@ -4,7 +4,6 @@ server:
 spring:
   application:
     name: API-GATEWAY
-
   cloud:
     gateway:
       routes:
@@ -20,12 +19,14 @@ spring:
           uri: lb://RATING-SERVICE
           predicates:
             - Path=/api/ratings/**
+  config:
+    import: configserver:http://localhost:8086
 
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    fetch-registry: true
-    register-with-eureka: true
-    service-url:
-      defaultZone: http://localhost:8084/eureka
+#eureka:
+#  instance:
+#    prefer-ip-address: true
+#  client:
+#    fetch-registry: true
+#    register-with-eureka: true
+#    service-url:
+#      defaultZone: http://localhost:8084/eureka

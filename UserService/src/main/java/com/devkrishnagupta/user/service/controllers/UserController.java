@@ -105,6 +105,10 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<User>> getAllUser(){
         List<User> users = userService.getAllUsers();
+        users=users.stream().map(user -> {
+            user.setRatings(ratingService.getRatingsByUserId(user.getUserId()));
+            return user;
+        }).collect(Collectors.toList());
         return ResponseEntity.ok(users);
     }
 }

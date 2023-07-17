@@ -11,14 +11,27 @@ spring:
           uri: lb://USER-SERVICE
           predicates:
             - Path=/api/users/**
+          filters:
+            - AuthenticationFilter
+
         - id: HOTEL-SERVICE
           uri: lb://HOTEL-SERVICE
           predicates:
             - Path=/api/hotels/**,/api/staffs/**
+          filters:
+            - AuthenticationFilter
+
         - id: RATING-SERVICE
           uri: lb://RATING-SERVICE
           predicates:
             - Path=/api/ratings/**
+          filters:
+            - AuthenticationFilter
+
+        - id: AUTH-SERVICE
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/api/auth/**
   config:
     import: configserver:http://localhost:8086
 

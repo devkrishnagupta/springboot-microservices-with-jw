@@ -1,4 +1,4 @@
-package com.devkrishnagupta.user.service.entity;
+package com.devkrishnagupta.auth.service.entities;
 
 import lombok.*;
 
@@ -26,6 +26,6 @@ public class User {
     @Column(name = "about")
     private String about;
 
-    @Transient
-    private List<Rating> ratings = new ArrayList<>();
+//    @Transient
+//    private List<Rating> ratings = new ArrayList<>();
 }

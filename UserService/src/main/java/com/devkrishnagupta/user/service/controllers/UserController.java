@@ -104,6 +104,7 @@ public class UserController {
     //all user get
     @GetMapping
     public ResponseEntity<List<User>> getAllUser(){
+        logger.info("GETTING ALL USERS INFO:- API");
         List<User> users = userService.getAllUsers();
         return ResponseEntity.ok(users);
     }

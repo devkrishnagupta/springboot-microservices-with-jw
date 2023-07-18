@@ -11,6 +11,12 @@ spring:
           uri: https://github.com/dev1entnest/microservice-config
           clone-on-start: true
 
+  zipkin:
+    base-url:http://localhost:9411
+  sleuth:
+    sampler:
+      probability: 1.0
+
 eureka:
   instance:
     prefer-ip-address: true

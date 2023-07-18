@@ -1,9 +1,11 @@
 package com.devkrishnagupta.auth.service.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -25,6 +27,9 @@ public class User {
     private String password;
     @Column(name = "about")
     private String about;
+    @Column(name = "dob")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
+    private Date dob;
 
 //    @Transient
 //    private List<Rating> ratings = new ArrayList<>();

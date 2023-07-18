@@ -45,7 +45,8 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public User register(){
-        return null;
+    public User register(@RequestBody User user){
+        User newUser = userService.saveUser(user);
+        return newUser;
     }
 }

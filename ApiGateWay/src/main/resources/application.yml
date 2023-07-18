@@ -32,6 +32,8 @@ spring:
           uri: lb://AUTH-SERVICE
           predicates:
             - Path=/api/auth/**
+          filters:
+            - AuthenticationFilter
   config:
     import: configserver:http://localhost:8086
 
